@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Omnify AI - Help me decide</title>
+<link rel="stylesheet" href="assets/omnify.css" />
+<style>
+  /* dimmed backdrop of the registration screen */
+  .backdrop { min-height: 100dvh; background: var(--cream); position: relative; overflow: hidden; }
+  .behind { filter: blur(3px) saturate(.85); opacity: .5; pointer-events: none; padding: 60px 0; }
+  .behind .ghost { max-width: 760px; margin: 0 auto; }
+  .behind .gline { height: 46px; background: #fff; border: 1px solid var(--line); border-radius: 14px; margin-bottom: 14px; }
+  .behind .gline.s { width: 60%; } .behind .gline.m { width: 85%; }
+
+  .scrim { position: fixed; inset: 0; background: rgba(21,33,28,0.42); display: grid; place-items: center; z-index: 40; padding: 24px; }
+
+  .modal {
+    width: 100%; max-width: 540px; background: var(--paper); border-radius: 28px;
+    box-shadow: var(--shadow-lg); overflow: hidden; animation: rise .5s var(--ease);
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(24px) scale(.97);} to { opacity:1; transform:none;} }
+
+  .m-head { padding: 22px 26px; background: linear-gradient(120deg, var(--green), var(--mint-deep)); color: #fff; }
+  .m-head .row { display: flex; align-items: center; gap: 10px; }
+  .m-head h2 { font-size: 21px; font-weight: 800; letter-spacing: -0.01em; }
+  .m-head p { opacity: .92; font-size: 14px; margin-top: 6px; }
+  .m-body { padding: 24px 26px 26px; }
+
+  .verdict {
+    display: flex; gap: 14px; align-items: flex-start; padding: 16px;
+    background: var(--mint-soft); border-radius: 18px; margin-bottom: 18px;
+  }
+  .verdict .ic { width: 40px; height: 40px; border-radius: 12px; background: var(--green); display: grid; place-items: center; flex: none; }
+  .verdict h3 { font-size: 17px; font-weight: 800; color: var(--green-ink); }
+  .verdict p { font-size: 14.5px; color: var(--ink-soft); margin-top: 4px; line-height: 1.5; }
+
+  .reasons { margin-bottom: 20px; }
+  .reasons li { display: flex; gap: 10px; align-items: flex-start; padding: 9px 0; font-size: 14.5px; color: var(--ink-soft); list-style: none; }
+  .reasons li svg { flex: none; margin-top: 2px; }
+
+  /* projected comparison */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 22px; }
+  .col { border: 1.5px solid var(--line); border-radius: 16px; padding: 16px; }
+  .col.win { border-color: var(--green); background: var(--cream); }
+  .col .name { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .col .big { font-family:'Outfit',sans-serif; font-weight: 800; font-size: 26px; margin: 6px 0; }
+  .col .sub { font-size: 13px; color: var(--ink-soft); }
+  .col .tagwin { display:inline-block; margin-top:10px; font-size: 12px; font-weight: 800; color: var(--green-deep); }
+
+  .m-actions { display: flex; gap: 12px; }
+  .m-actions .btn { flex: 1; }
+</style>
+</head>
+<body>
+
+<div class="backdrop">
+  <!-- blurred context behind -->
+  <div class="behind">
+    <div class="wrap">
+      <div class="ghost">
+        <div class="gline m"></div><div class="gline"></div><div class="gline s"></div>
+        <div class="gline"></div><div class="gline m"></div><div class="gline s"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal -->
+  <div class="scrim">
+    <div class="modal" role="dialog" aria-label="AI decision helper">
+      <div class="m-head">
+        <div class="row">
+          <svg class="spark" style="width:22px;height:22px;" viewBox="0 0 24 24" fill="#fff"><path d="M12 2l1.8 5.5L19 9l-5.2 1.5L12 16l-1.8-5.5L5 9l5.2-1.5z"/></svg>
+          <span class="pill" style="background:rgba(255,255,255,.22);color:#fff;">Omnify AI</span>
+        </div>
+        <h2 style="margin-top:12px;">Trial or membership?</h2>
+        <p>I looked at what you told me about your family. Here is my honest take.</p>
+      </div>
+
+      <div class="m-body">
+        <div class="verdict">
+          <span class="ic">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          </span>
+          <div>
+            <h3>Start with the free trial</h3>
+            <p>Your son is a bit shy and has not tried robotics yet. One free class tells you if it clicks, with zero risk.</p>
+          </div>
+        </div>
+
+        <ul class="reasons">
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="#16C172"><circle cx="12" cy="12" r="10"/></svg> He is new to robotics, so a low-pressure first session fits better than a commitment.</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="#16C172"><circle cx="12" cy="12" r="10"/></svg> You mentioned budget is tight. Trial costs nothing and there is no card on file.</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="#16C172"><circle cx="12" cy="12" r="10"/></svg> If both kids enjoy it, the sibling membership saves you $24 a month later.</li>
+        </ul>
+
+        <div class="compare">
+          <div class="col win">
+            <div class="name">Trial first</div>
+            <div class="big">$0</div>
+            <div class="sub">1 class. Upgrade only if they love it.</div>
+            <span class="tagwin">Best for your family now</span>
+          </div>
+          <div class="col">
+            <div class="name">Membership now</div>
+            <div class="big">$120<span style="font-size:14px;color:var(--muted);">/mo</span></div>
+            <div class="sub">Full access, but a bigger leap before you know.</div>
+          </div>
+        </div>
+
+        <div class="m-actions">
+          <a class="btn btn-ghost" href="02-registration.html">See membership</a>
+          <a class="btn btn-primary" href="02-registration.html">Book the free trial</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/omnify.js"></script>
+</body>
+</html>

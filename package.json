@@ -1,0 +1,10 @@
+{
+  "name": "omnify-ai-service-store",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "AI-first Service Store prototype for the Omnify design assessment.",
+  "engines": {
+    "node": ">=18"
+  }
+}

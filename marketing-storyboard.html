@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Omnify AI - Demo storyboard</title>
+<link rel="stylesheet" href="assets/omnify.css" />
+<style>
+  .sb { padding: 56px 0 90px; background: var(--cream); }
+  .sb-head { max-width: 720px; margin: 0 auto 44px; text-align:center; }
+  .frames { display: grid; gap: 22px; max-width: 920px; margin: 0 auto; }
+  .frame {
+    display: grid; grid-template-columns: 110px 1.1fr 1.2fr; gap: 22px; align-items: stretch;
+    background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-card);
+    padding: 20px; box-shadow: var(--shadow-sm);
+  }
+  .fnum { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; }
+  .fnum .b { width: 54px; height: 54px; border-radius: 16px; background: var(--mint-soft); display:grid; place-items:center; font-family:'Outfit',sans-serif; font-weight:800; font-size:24px; color: var(--green-deep); }
+  .fnum .t { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .fshot { border-radius: 16px; overflow: hidden; }
+  .fshot img { width: 100%; height: 100%; object-fit: cover; min-height: 150px; }
+  .fcopy h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+  .fcopy .scene { font-size: 14px; color: var(--ink-soft); line-height: 1.5; margin-bottom: 12px; }
+  .veo {
+    background: #1A1F23; border-radius: 14px; padding: 13px 14px; position: relative;
+  }
+  .veo .lab { display:flex; align-items:center; gap:6px; font-size: 11px; font-weight: 800; letter-spacing:.08em; text-transform: uppercase; color: var(--mint-deep); margin-bottom: 8px; }
+  .veo code { display:block; color: #D6E2DC; font-size: 12.5px; line-height: 1.5; font-family: 'Plus Jakarta Sans', monospace; }
+  .copybtn { position:absolute; top: 11px; right: 11px; background: rgba(255,255,255,.1); border:none; color:#cfe; font-size:11px; font-weight:700; padding:4px 9px; border-radius:8px; cursor:pointer; }
+  .copybtn:hover { background: rgba(255,255,255,.2); }
+
+  @media (max-width: 820px) { .frame { grid-template-columns: 1fr; } .fnum { flex-direction:row; justify-content:flex-start; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html"><span class="logo-mark"></span><span class="logo-word">omnify<b>.</b></span></a>
+    <div class="nav-links">
+      <a href="01-discovery.html">Discover</a>
+      <a href="marketing-hero.html">For businesses</a>
+      <a href="marketing-before-after.html">Before / after</a>
+      <a href="index.html">All deliverables</a>
+    </div>
+    <a class="btn btn-primary btn-sm" href="veo3-prompts.md">All Veo3 prompts</a>
+  </div>
+</nav>
+
+<section class="sb">
+  <div class="wrap">
+    <div class="sb-head reveal in">
+      <span class="eyebrow">30-second product demo</span>
+      <h2 class="h-section" style="margin-top:10px;">From "I have no idea" to booked</h2>
+      <p class="lead" style="margin:14px auto 0;">Five frames. Each one has a ready-to-paste Veo3 prompt so the film matches the brand.</p>
+    </div>
+
+    <div class="frames">
+
+      <div class="frame reveal">
+        <div class="fnum"><div class="b">1</div><div class="t">0-5s</div></div>
+        <div class="fshot"><img src="https://picsum.photos/seed/omnify-sb-parent-phone/400/300" alt="Parent on couch with phone" /></div>
+        <div class="fcopy">
+          <h3>The overwhelmed parent</h3>
+          <p class="scene">A mum on the couch, phone in hand, dozens of class cards blurring past. She sighs.</p>
+          <div class="veo">
+            <button class="copybtn" data-c="A warm, soft-lit living room. A 30s mother sits on a couch scrolling a phone, slightly overwhelmed, faint reflection of endless activity listings on her face. Cozy mint and cream tones, shallow depth of field, gentle handheld motion, cinematic, 5 seconds.">Copy</button>
+            <div class="lab"><svg class="spark" style="width:13px;height:13px;" viewBox="0 0 24 24" fill="#8FDDD4"><path d="M12 2l1.8 5.5L19 9l-5.2 1.5L12 16l-1.8-5.5L5 9l5.2-1.5z"/></svg> Veo3 prompt</div>
+            <code>Warm, soft-lit living room. A 30s mother on a couch scrolling a phone, slightly overwhelmed. Mint and cream tones, shallow depth of field, gentle handheld motion, cinematic, 5s.</code>
+          </div>
+        </div>
+      </div>
+
+      <div class="frame reveal">
+        <div class="fnum"><div class="b">2</div><div class="t">5-12s</div></div>
+        <div class="fshot"><img src="https://picsum.photos/seed/omnify-sb-typing/400/300" alt="Typing a message" /></div>
+        <div class="fcopy">
+          <h3>She just talks</h3>
+          <p class="scene">Close-up of the Omnify input. She types, "7yo loves robots, free weekends." A mic pulses as she speaks.</p>
+          <div class="veo">
+            <button class="copybtn" data-c="Extreme close-up of a clean mobile app text field on a mint background, a green pulsing microphone icon, words appearing as if dictated: 7 year old loves robots, free weekends. Crisp UI, soft glow, smooth macro motion, 6 seconds.">Copy</button>
+            <div class="lab"><svg class="spark" style="width:13px;height:13px;" viewBox="0 0 24 24" fill="#8FDDD4"><path d="M12 2l1.8 5.5L19 9l-5.2 1.5L12 16l-1.8-5.5L5 9l5.2-1.5z"/></svg> Veo3 prompt</div>
+            <code>Extreme close-up of a clean mobile text field on mint, a green pulsing mic icon, dictated words appearing. Crisp UI, soft glow, smooth macro motion, 6s.</code>
+          </div>
+        </div>
+      </div>
+
+      <div class="frame reveal">
+        <div class="fnum"><div class="b">3</div><div class="t">12-18s</div></div>
+        <div class="fshot"><img src="https://picsum.photos/seed/omnify-sb-aiparse/400/300" alt="AI parsing into tags" /></div>
+        <div class="fcopy">
+          <h3>The AI untangles it</h3>
+          <p class="scene">Her sentence breaks apart into glowing tags: age, loves robots, shy, weekends, sibling, trial.</p>
+          <div class="veo">
+            <button class="copybtn" data-c="Abstract motion graphic: a handwritten sentence dissolves into floating rounded tag chips labeled age 7, robots, shy, weekends, sibling, trial, each lighting up green in sequence. Clean white space, soft particles, satisfying spring motion, 6 seconds.">Copy</button>
+            <div class="lab"><svg class="spark" style="width:13px;height:13px;" viewBox="0 0 24 24" fill="#8FDDD4"><path d="M12 2l1.8 5.5L19 9l-5.2 1.5L12 16l-1.8-5.5L5 9l5.2-1.5z"/></svg> Veo3 prompt</div>
+            <code>Motion graphic: a sentence dissolves into floating rounded tag chips (age 7, robots, shy, weekends, sibling, trial) lighting up green in sequence. White space, soft particles, spring motion, 6s.</code>
+          </div>
+        </div>
+      </div>
+
+      <div class="frame reveal">
+        <div class="fnum"><div class="b">4</div><div class="t">18-25s</div></div>
+        <div class="fshot"><img src="https://picsum.photos/seed/omnify-sb-cards/400/300" alt="Recommendation cards" /></div>
+        <div class="fcopy">
+          <h3>Three perfect matches</h3>
+          <p class="scene">Three program cards slide in with match scores. She smiles and taps the 96% one.</p>
+          <div class="veo">
+            <button class="copybtn" data-c="Three clean program cards slide up onto a mint background, each with a kid activity photo and a green match percentage badge (96, 91, 88). A finger taps the first. Bright, friendly, smooth UI animation, soft shadow, 6 seconds.">Copy</button>
+            <div class="lab"><svg class="spark" style="width:13px;height:13px;" viewBox="0 0 24 24" fill="#8FDDD4"><path d="M12 2l1.8 5.5L19 9l-5.2 1.5L12 16l-1.8-5.5L5 9l5.2-1.5z"/></svg> Veo3 prompt</div>
+            <code>Three clean program cards slide up on mint, each with a kid-activity photo and a green match badge (96, 91, 88). A finger taps the first. Bright, friendly UI animation, soft shadow, 6s.</code>
+          </div>
+        </div>
+      </div>
+
+      <div class="frame reveal">
+        <div class="fnum"><div class="b">5</div><div class="t">25-30s</div></div>
+        <div class="fshot"><img src="https://picsum.photos/seed/omnify-sb-happykid/400/300" alt="Happy kid at robotics class" /></div>
+        <div class="fcopy">
+          <h3>Booked, and beaming</h3>
+          <p class="scene">Cut to her son at a robotics table, grinning. A green check and the Omnify logo land.</p>
+          <div class="veo">
+            <button class="copybtn" data-c="A happy 7 year old boy building a small robot at a bright classroom table, laughing with another child. Warm natural light. Smash cut to a green checkmark and the omnify logo on a clean mint card. Joyful, cinematic, 5 seconds.">Copy</button>
+            <div class="lab"><svg class="spark" style="width:13px;height:13px;" viewBox="0 0 24 24" fill="#8FDDD4"><path d="M12 2l1.8 5.5L19 9l-5.2 1.5L12 16l-1.8-5.5L5 9l5.2-1.5z"/></svg> Veo3 prompt</div>
+            <code>Happy 7-year-old boy building a small robot at a bright classroom table, laughing. Warm natural light. Smash cut to a green checkmark and the omnify logo on a mint card. Joyful, cinematic, 5s.</code>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <a class="logo" href="index.html"><span class="logo-mark"></span><span class="logo-word">omnify<b>.</b></span></a>
+    <span>AI Creative Design Intern Assessment.</span>
+  </div>
+</footer>
+
+<script src="assets/omnify.js"></script>
+<script>
+document.querySelectorAll('.copybtn').forEach(function(b){
+  b.addEventListener('click', function(){
+    navigator.clipboard.writeText(b.dataset.c).then(function(){
+      var t = b.textContent; b.textContent = 'Copied'; setTimeout(function(){ b.textContent = t; }, 1200);
+    });
+  });
+});
+</script>
+</body>
+</html>

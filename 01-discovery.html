@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Omnify AI - Discover</title>
+<link rel="stylesheet" href="assets/omnify.css" />
+<style>
+  /* ---- Scroll-scrub video hero ---- */
+  .scrollvideo { position: relative; height: 220vh; background: var(--mint); }
+  .scrollvideo .sticky {
+    position: sticky; top: 0; height: 100dvh; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .scrollvideo video {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; z-index: 0;
+  }
+  .scrollvideo .veil {
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(180deg, rgba(183,236,230,0) 40%, rgba(183,236,230,0.55) 100%);
+  }
+  .scrubhint {
+    position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 2;
+    font-size: 13px; color: var(--green-ink); font-weight: 700; opacity: .85;
+    background: rgba(251,253,252,0.7); padding: 7px 16px; border-radius: 999px; backdrop-filter: blur(6px);
+  }
+
+  /* Discovery headline (now lives in its own section, no video behind it) */
+  .discover-head { text-align: center; max-width: 760px; margin: 0 auto 40px; }
+  .discover-head .pill { margin-bottom: 18px; }
+  .discover-head h1 {
+    font-size: clamp(34px, 5.2vw, 60px); font-weight: 800; line-height: 1.07;
+    letter-spacing: -0.03em; color: var(--ink); margin: 0;
+  }
+  .discover-head h1 em { font-style: italic; color: var(--green-deep); line-height: 1.12; display: inline-block; padding-bottom: 3px; }
+  .discover-head p { margin: 18px auto 0; font-size: clamp(16px,2vw,20px); color: var(--ink-soft); max-width: 36ch; line-height: 1.55; }
+
+  /* ---- AI discovery interaction ---- */
+  .discover { position: relative; padding: 96px 0 110px; overflow: hidden; }
+  .discover .blob1 { width: 320px; height: 320px; background: var(--purple); opacity: .14; border-radius: 50%; filter: blur(10px); top: -80px; right: -60px; }
+  .discover .blob2 { width: 240px; height: 240px; background: var(--blue); opacity: .10; border-radius: 50%; bottom: 40px; left: -70px; }
+
+  .panel {
+    background: var(--paper); border: 1px solid var(--line); border-radius: 28px;
+    box-shadow: var(--shadow-lg); max-width: 760px; margin: 0 auto; position: relative; z-index: 2;
+    overflow: hidden;
+  }
+  .panel-head { padding: 22px 26px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
+  .panel-head .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green); }
+  .panel-head h3 { font-size: 17px; font-weight: 700; }
+  .panel-body { padding: 26px; }
+
+  .inputbox {
+    border: 1.5px solid var(--mint-deep); border-radius: 20px; background: var(--cream);
+    padding: 16px 18px; transition: border-color .2s, box-shadow .2s;
+  }
+  .inputbox:focus-within { border-color: var(--green); box-shadow: 0 0 0 4px rgba(22,193,114,0.12); }
+  .inputbox textarea {
+    width: 100%; border: none; background: transparent; resize: none; outline: none;
+    font-family: inherit; font-size: 16px; color: var(--ink); line-height: 1.55; min-height: 92px;
+  }
+  .input-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; gap: 12px; }
+  .mic {
+    width: 46px; height: 46px; border-radius: 50%; border: none; cursor: pointer; flex: none;
+    background: #fff; border: 1.5px solid var(--line); display: grid; place-items: center;
+    transition: all .2s var(--ease);
+  }
+  .mic:hover { border-color: var(--green); }
+  .mic.live { background: var(--green); border-color: var(--green); animation: micpulse 1.2s infinite; }
+  .mic.live svg { stroke: #fff; }
+  @keyframes micpulse { 0%,100%{ box-shadow: 0 0 0 0 rgba(22,193,114,.45);} 50%{ box-shadow: 0 0 0 10px rgba(22,193,114,0);} }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .chip {
+    padding: 8px 14px; border-radius: var(--r-pill); background: var(--mint-soft);
+    color: var(--green-ink); font-size: 13px; font-weight: 600; cursor: pointer; border: none;
+    transition: background .15s;
+  }
+  .chip:hover { background: var(--mint-deep); }
+
+  /* ---- AI analysis reveal ---- */
+  .analysis { margin-top: 22px; display: none; }
+  .analysis.show { display: block; }
+  .thinking { display: flex; align-items: center; gap: 12px; color: var(--green-ink); font-weight: 600; font-size: 15px; }
+  .thinking .bar { flex: 1; height: 6px; border-radius: 999px; background: var(--mint-soft); overflow: hidden; }
+  .thinking .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--green), var(--mint-deep)); animation: fill 1.4s var(--ease) forwards; }
+  @keyframes fill { to { width: 100%; } }
+
+  .understood { margin-top: 4px; }
+  .understood .label { font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+  .tag {
+    display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 14px;
+    background: #fff; border: 1px solid var(--line); font-size: 14px; font-weight: 600; color: var(--ink);
+    opacity: 0; transform: translateY(8px) scale(.96); box-shadow: var(--shadow-sm);
+  }
+  .tag.pop { animation: pop .5s var(--ease) forwards; }
+  .tag .k { color: var(--muted); font-weight: 500; }
+  @keyframes pop { to { opacity: 1; transform: none; } }
+
+  /* ---- Recommendation cards ---- */
+  .recs { margin-top: 64px; }
+  .recs-head { text-align: center; margin-bottom: 36px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .rec {
+    background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-card);
+    overflow: hidden; box-shadow: var(--shadow); transition: transform .25s var(--ease), box-shadow .25s;
+    display: flex; flex-direction: column;
+  }
+  .rec:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+  .rec .img { position: relative; aspect-ratio: 16/10; overflow: hidden; }
+  .rec .img img { width: 100%; height: 100%; object-fit: cover; }
+  .rec .match {
+    position: absolute; top: 12px; left: 12px;
+    background: rgba(251,253,252,0.94); backdrop-filter: blur(6px);
+    padding: 6px 12px; border-radius: 999px; font-size: 13px; font-weight: 800; color: var(--green-deep);
+    box-shadow: var(--shadow-sm);
+  }
+  .rec .body { padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+  .rec h4 { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; }
+  .rec .why { font-size: 14.5px; color: var(--ink-soft); line-height: 1.5; }
+  .rec .why b { color: var(--green-ink); font-weight: 700; }
+  .rec .badges { display: flex; flex-wrap: wrap; gap: 7px; }
+  .rec .meta { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 6px; }
+  .rec .price { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 20px; }
+  .rec .price s { color: var(--muted); font-weight: 500; font-size: 14px; margin-right: 6px; }
+
+  @media (max-width: 880px) { .grid3 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html"><span class="logo-mark"></span><span class="logo-word">omnify<b>.</b></span></a>
+    <div class="nav-links">
+      <a href="01-discovery.html">Discover</a>
+      <a href="02-registration.html">Register</a>
+      <a href="marketing-hero.html">For businesses</a>
+      <a href="index.html">All deliverables</a>
+    </div>
+    <a class="btn btn-primary btn-sm" href="02-registration.html">Get started</a>
+  </div>
+</nav>
+
+<!-- SCROLL-SCRUB VIDEO INTRO (branded clip, no text overlay) -->
+<section class="scrollvideo" id="svhero">
+  <div class="sticky">
+    <video id="scrubvid" src="video/hero.mp4" muted playsinline preload="auto"></video>
+    <div class="veil"></div>
+    <div class="scrubhint">Scroll to begin</div>
+  </div>
+</section>
+
+<!-- AI DISCOVERY INTERACTION -->
+<section class="discover">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="wrap">
+
+    <div class="discover-head reveal">
+      <span class="pill pill-mint">AI-first Service Store</span>
+      <h1>Tell us about your kid.<br/>We find <em>their thing.</em></h1>
+      <p>No filters. No forms. Just say it the way you would to a friend.</p>
+    </div>
+
+    <div class="panel reveal">
+      <div class="panel-head">
+        <span class="dot"></span>
+        <h3>Omnify AI</h3>
+        <span class="pill pill-ai" style="margin-left:auto;">Listening</span>
+      </div>
+      <div class="panel-body">
+
+        <div class="inputbox">
+          <textarea id="msg">my son's 7, kinda shy but he's obsessed with building robots and legos. we're free most weekends. also have a 5yo daughter who might wanna join too. budget's a bit tight tbh and honestly not sure if we should commit to a full membership yet</textarea>
+          <div class="input-row">
+            <span id="hint" style="font-size:13px;color:var(--muted);font-weight:600;">Type it, or tap the mic to talk</span>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <button class="mic" id="mic" aria-label="Use voice">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#15211C" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4"/></svg>
+              </button>
+              <button class="btn btn-primary" id="go">Find programs</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="chips" id="chips">
+          <button class="chip">Loves art &amp; music</button>
+          <button class="chip">Weekday afternoons only</button>
+          <button class="chip">Two kids, same time slot</button>
+          <button class="chip">Just want to try first</button>
+        </div>
+
+        <!-- AI analysis -->
+        <div class="analysis" id="analysis">
+          <div class="thinking" id="thinking">
+            <svg class="spark" viewBox="0 0 24 24" fill="#0E9F63"><path d="M12 2l1.8 5.5L19 9l-5.2 1.5L12 16l-1.8-5.5L5 9l5.2-1.5z"/></svg>
+            <span id="thinktext">Reading what you wrote.</span>
+            <span class="bar"><i></i></span>
+          </div>
+          <div class="understood" id="understood" style="display:none;">
+            <div class="label">Here is what we understood</div>
+            <div class="tags" id="tags"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RECOMMENDATIONS -->
+    <div class="recs" id="recs" style="display:none;">
+      <div class="recs-head reveal in">
+        <span class="eyebrow">Matched for your family</span>
+        <h2 class="h-section" style="margin-top:8px;">3 programs that actually fit</h2>
+      </div>
+      <div class="grid3">
+
+        <div class="rec">
+          <div class="img"><span class="match">96% match</span><img src="https://picsum.photos/seed/omnify-robotics-lego/640/400" alt="Kids building robots" /></div>
+          <div class="body">
+            <h4>Little Builders Robotics</h4>
+            <p class="why">Hands-on Lego robotics in <b>small, calm groups</b> built for first-timers. Gentle pace suits a shy 7-year-old.</p>
+            <div class="badges">
+              <span class="pill pill-mint">Sat mornings</span>
+              <span class="pill pill-purple">Ages 6-9</span>
+              <span class="pill pill-blue">Free trial</span>
+            </div>
+            <div class="meta"><span class="price"><s>$695</s>$0 trial</span><a class="btn btn-primary btn-sm" href="02-registration.html">Choose</a></div>
+          </div>
+        </div>
+
+        <div class="rec">
+          <div class="img"><span class="match">91% match</span><img src="https://picsum.photos/seed/omnify-siblings-craft/640/400" alt="Siblings doing a craft activity" /></div>
+          <div class="body">
+            <h4>Maker Duo (Siblings)</h4>
+            <p class="why">One weekend slot, <b>both kids together</b>. Your 5-year-old joins a buddy track in the same room, same time.</p>
+            <div class="badges">
+              <span class="pill pill-mint">Sat 10-11:30</span>
+              <span class="pill pill-coral">Sibling slot</span>
+              <span class="pill pill-purple">Ages 4-9</span>
+            </div>
+            <div class="meta"><span class="price">$120<span style="font-size:13px;color:var(--muted);font-weight:500;">/mo</span></span><a class="btn btn-ghost btn-sm" href="02-registration.html">Choose</a></div>
+          </div>
+        </div>
+
+        <div class="rec">
+          <div class="img"><span class="match">88% match</span><img src="https://picsum.photos/seed/omnify-coding-stem/640/400" alt="Child at a STEM class" /></div>
+          <div class="body">
+            <h4>Weekend STEM Explorers</h4>
+            <p class="why">Rotates robots, coding and science so a curious kid can <b>find a favorite</b> before committing.</p>
+            <div class="badges">
+              <span class="pill pill-mint">Sun mornings</span>
+              <span class="pill pill-blue">Free trial</span>
+              <span class="pill pill-purple">Ages 7-10</span>
+            </div>
+            <div class="meta"><span class="price"><s>$595</s>$0 trial</span><a class="btn btn-ghost btn-sm" href="02-registration.html">Choose</a></div>
+          </div>
+        </div>
+
+      </div>
+      <p style="text-align:center;margin-top:28px;color:var(--muted);font-size:14px;">Not sure between a trial and membership? <a href="03-ai-decision.html" style="color:var(--green-deep);font-weight:700;">Ask Omnify AI to compare for your family.</a></p>
+    </div>
+
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <a class="logo" href="index.html"><span class="logo-mark"></span><span class="logo-word">omnify<b>.</b></span></a>
+    <span>AI Creative Design Intern Assessment. Prototype, not a live store.</span>
+  </div>
+</footer>
+
+<script src="assets/omnify.js"></script>
+<script>
+/* ---------- Scroll-scrubbed hero video (single smooth rAF loop) ---------- */
+(function () {
+  var section = document.getElementById('svhero');
+  var video = document.getElementById('scrubvid');
+  var copy = document.querySelector('.hero-copy');
+  var hint = document.querySelector('.scrubhint');
+  if (!section || !video) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) { video.setAttribute('autoplay',''); video.loop = true; video.play().catch(function(){}); return; }
+
+  var duration = 0, desired = 0, smooth = 0, isSeeking = false, primed = false;
+
+  function grabDuration() {
+    if (isFinite(video.duration) && video.duration > 0) duration = video.duration;
+  }
+  ['loadedmetadata', 'durationchange', 'canplay', 'loadeddata'].forEach(function (ev) {
+    video.addEventListener(ev, grabDuration);
+  });
+  grabDuration();
+
+  // Prime the decoder: a muted play/pause makes frame-accurate seeking reliable.
+  function prime() {
+    if (primed) return; primed = true;
+    var p = video.play();
+    if (p && p.then) { p.then(function () { video.pause(); video.currentTime = 0; }).catch(function () {}); }
+    else { try { video.pause(); } catch (e) {} }
+  }
+  video.addEventListener('canplay', prime);
+  window.addEventListener('scroll', prime, { passive: true, once: true });
+
+  // Only issue the next seek once the previous one has finished, so the
+  // decoder never thrashes. Always chase the latest desired time.
+  video.addEventListener('seeked', function () {
+    isSeeking = false;
+    if (Math.abs(video.currentTime - desired) > 0.03) pump();
+  });
+  function pump() {
+    if (isSeeking || !duration) return;
+    if (Math.abs(video.currentTime - desired) < 0.02) return;
+    isSeeking = true;
+    try { video.currentTime = desired; } catch (e) { isSeeking = false; }
+  }
+
+  function clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
+  function map(p, inA, inB) { return clamp((p - inA) / (inB - inA), 0, 1); }
+
+  function frame() {
+    var rect = section.getBoundingClientRect();
+    var scrollable = section.offsetHeight - window.innerHeight;
+    var progress = clamp(-rect.top / scrollable, 0, 1);
+
+    if (duration) {
+      var targetTime = progress * (duration - 0.05);
+      smooth += (targetTime - smooth) * 0.16; // eased so it glides, not snaps
+      desired = smooth;
+      pump();
+    }
+
+    // hero copy: hold still early, then fade + lift away gracefully
+    if (copy) {
+      var out = map(progress, 0.18, 0.62);
+      copy.style.opacity = (1 - out).toFixed(3);
+      copy.style.transform = 'translateY(' + (-out * 40).toFixed(1) + 'px)';
+    }
+    if (hint) hint.style.opacity = (0.8 * (1 - map(progress, 0.04, 0.18))).toFixed(3);
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* ---------- AI analysis (real OpenRouter call, with graceful fallback) ---------- */
+(function () {
+  var go = document.getElementById('go');
+  var mic = document.getElementById('mic');
+  var analysis = document.getElementById('analysis');
+  var thinktext = document.getElementById('thinktext');
+  var understood = document.getElementById('understood');
+  var tagsWrap = document.getElementById('tags');
+  var recs = document.getElementById('recs');
+  var grid = recs.querySelector('.grid3');
+  var chips = document.getElementById('chips');
+  var msg = document.getElementById('msg');
+
+  var FALLBACK = {
+    understood: [
+      { k: 'Child', v: 'Son, age 7' },
+      { k: 'Also', v: 'Daughter, age 5' },
+      { k: 'Loves', v: 'Robots and Lego' },
+      { k: 'Temperament', v: 'Shy, small groups' },
+      { k: 'Schedule', v: 'Weekends free' },
+      { k: 'Together', v: 'Siblings, same slot' },
+      { k: 'Budget', v: 'Cost-conscious' },
+      { k: 'Commitment', v: 'Wants to trial first' }
+    ],
+    recommendations: [
+      { name: 'Little Builders Robotics', match: 96, why: 'Hands-on Lego robotics in small, calm groups built for first-timers.', badges: ['Sat mornings', 'Ages 6-9', 'Free trial'], price: '$0 trial' },
+      { name: 'Maker Duo (Siblings)', match: 91, why: 'One weekend slot, both kids together in the same room.', badges: ['Sat 10-11:30', 'Sibling slot', 'Ages 4-9'], price: '$120/mo' },
+      { name: 'Weekend STEM Explorers', match: 88, why: 'Rotates robots, coding and science so a curious kid can find a favorite.', badges: ['Sun mornings', 'Free trial', 'Ages 7-10'], price: '$0 trial' }
+    ]
+  };
+
+  var PILLS = ['pill-mint', 'pill-purple', 'pill-blue', 'pill-coral'];
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function seed(name) { return 'omnify-' + String(name).toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 28); }
+
+  function renderTags(list) {
+    understood.style.display = 'block';
+    tagsWrap.innerHTML = '';
+    list.forEach(function (t, i) {
+      var el = document.createElement('span');
+      el.className = 'tag';
+      el.innerHTML = '<span class="k">' + esc(t.k) + '</span> ' + esc(t.v);
+      tagsWrap.appendChild(el);
+      setTimeout(function () { el.classList.add('pop'); }, i * 110);
+    });
+    return list.length * 110;
+  }
+
+  function renderRecs(list) {
+    grid.innerHTML = '';
+    list.slice(0, 3).forEach(function (r) {
+      var badges = (r.badges || []).slice(0, 3).map(function (b, i) {
+        return '<span class="pill ' + PILLS[i % PILLS.length] + '">' + esc(b) + '</span>';
+      }).join('');
+      var card = document.createElement('div');
+      card.className = 'rec';
+      card.innerHTML =
+        '<div class="img"><span class="match">' + (parseInt(r.match, 10) || 90) + '% match</span>' +
+        '<img src="https://picsum.photos/seed/' + seed(r.name) + '/640/400" alt="' + esc(r.name) + '" /></div>' +
+        '<div class="body"><h4>' + esc(r.name) + '</h4>' +
+        '<p class="why">' + esc(r.why) + '</p>' +
+        '<div class="badges">' + badges + '</div>' +
+        '<div class="meta"><span class="price">' + esc(r.price || '') + '</span>' +
+        '<a class="btn btn-primary btn-sm" href="02-registration.html">Choose</a></div></div>';
+      grid.appendChild(card);
+    });
+  }
+
+  function reveal(data) {
+    var tagTime = renderTags(data.understood && data.understood.length ? data.understood : FALLBACK.understood);
+    renderRecs(data.recommendations && data.recommendations.length ? data.recommendations : FALLBACK.recommendations);
+    setTimeout(function () {
+      recs.style.display = 'block';
+      recs.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, tagTime + 400);
+  }
+
+  var DEFAULT = msg.value.trim();
+  var hint = document.getElementById('hint');
+  var cleared = false;
+  // Treat the prefilled text as an example: clear it the moment the parent engages.
+  function clearExample() {
+    if (!cleared && msg.value.trim() === DEFAULT) { msg.value = ''; }
+    cleared = true;
+  }
+  msg.addEventListener('focus', clearExample);
+  msg.addEventListener('input', function () { cleared = true; });
+
+  function run() {
+    if (!msg.value.trim()) {
+      // Nothing to analyze yet. Nudge instead of running on an empty or example value.
+      msg.focus();
+      if (hint) { hint.textContent = 'Tell us about your kid first, or tap the mic.'; hint.style.color = 'var(--coral)'; }
+      return;
+    }
+    analysis.classList.add('show');
+    understood.style.display = 'none';
+    tagsWrap.innerHTML = '';
+    recs.style.display = 'none';
+    thinktext.textContent = 'Reading what you wrote.';
+    setTimeout(function () { thinktext.textContent = 'Asking Omnify AI.'; }, 600);
+
+    fetch('/api/ai', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: msg.value })
+    })
+      .then(function (r) { if (!r.ok) throw new Error('api ' + r.status); return r.json(); })
+      .then(function (data) {
+        if (!data || !data.understood) throw new Error('bad data');
+        thinktext.textContent = 'Here is what we understood.';
+        reveal(data);
+      })
+      .catch(function () {
+        // Offline / local-file / API down: use the scripted demo so it always works.
+        thinktext.textContent = 'Here is what we understood.';
+        reveal(FALLBACK);
+      });
+  }
+
+  if (go) go.addEventListener('click', run);
+  if (chips) chips.addEventListener('click', function (e) {
+    if (e.target.classList.contains('chip')) {
+      clearExample();
+      msg.value = (msg.value.trim() ? msg.value.trim() + ' ' : '') + e.target.textContent + '.';
+      msg.focus();
+    }
+  });
+
+  /* ---- Real voice input via Web Speech API (fills the box, does NOT auto-run) ---- */
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var recog = null, listening = false;
+
+  if (mic) mic.addEventListener('click', function () {
+    if (!SR) {
+      msg.focus();
+      if (hint) { hint.textContent = 'Voice is not supported in this browser. Please type instead.'; hint.style.color = 'var(--coral)'; }
+      return;
+    }
+    if (listening) { try { recog.stop(); } catch (e) {} return; }
+
+    recog = new SR();
+    recog.lang = 'en-US';
+    recog.interimResults = true;
+    recog.continuous = true;
+    clearExample();
+    var base = msg.value.trim() ? msg.value.trim() + ' ' : '';
+
+    recog.onstart = function () {
+      listening = true; mic.classList.add('live');
+      if (hint) { hint.textContent = 'Listening. Tap the mic again to stop.'; hint.style.color = 'var(--green-deep)'; }
+    };
+    recog.onresult = function (e) {
+      var txt = '';
+      for (var i = 0; i < e.results.length; i++) { txt += e.results[i][0].transcript; }
+      msg.value = base + txt;
+    };
+    recog.onerror = function (ev) {
+      listening = false; mic.classList.remove('live');
+      if (hint) {
+        hint.style.color = 'var(--coral)';
+        hint.textContent = (ev && ev.error === 'not-allowed')
+          ? 'Microphone blocked. Allow mic access, or type instead.'
+          : 'Could not hear that. Try again, or type instead.';
+      }
+    };
+    recog.onend = function () {
+      listening = false; mic.classList.remove('live');
+      if (hint && msg.value.trim()) { hint.textContent = 'Got it. Tap Find programs when ready.'; hint.style.color = 'var(--green-deep)'; }
+    };
+    try { recog.start(); } catch (e) {}
+  });
+})();
+</script>
+</body>
+</html>

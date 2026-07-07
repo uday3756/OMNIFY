@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Omnify AI - Social creative</title>
+<link rel="stylesheet" href="assets/omnify.css" />
+<style>
+  .stage { padding: 50px 0 90px; background: var(--cream); min-height: 100dvh; }
+  .stage-head { text-align:center; max-width:680px; margin:0 auto 40px; }
+  .creatives { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; align-items: flex-start; }
+
+  /* 1:1 square post */
+  .sq {
+    width: 420px; height: 420px; border-radius: 28px; overflow: hidden; position: relative;
+    background: var(--mint); box-shadow: var(--shadow-lg); flex: none;
+  }
+  .sq .deco { position:absolute; border-radius:50%; }
+  .sq .d1 { width:160px;height:160px;background:var(--mint-soft);top:-40px;right:-30px;opacity:.7; }
+  .sq .d2 { width:90px;height:90px;background:var(--purple);opacity:.22;bottom:30px;left:-20px; }
+  .sq .star { position:absolute; top:40px; left:34px; width:22px;height:22px;background:var(--blue);clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%); }
+  .sq .inner { position:relative; z-index:2; padding:40px 36px; height:100%; display:flex; flex-direction:column; }
+  .sq .logo-word { font-size: 22px; }
+  .sq h2 { font-family:'Outfit',sans-serif; font-weight:800; font-size:38px; line-height:1.0; letter-spacing:-0.03em; margin-top:auto; }
+  .sq h2 em { font-style:italic; color: var(--green-deep); }
+  .sq p { font-size:15px; color:var(--ink-soft); margin-top:14px; max-width:30ch; }
+  .sq .cta { margin-top:18px; align-self:flex-start; }
+
+  /* 9:16 story */
+  .story {
+    width: 260px; height: 462px; border-radius: 24px; overflow: hidden; position: relative;
+    box-shadow: var(--shadow-lg); flex: none; background: #122019;
+  }
+  .story img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.78; }
+  .story .grad { position:absolute; inset:0; background: linear-gradient(180deg, rgba(18,32,25,.1) 30%, rgba(18,32,25,.92)); }
+  .story .s-inner { position:absolute; inset:0; z-index:2; padding:26px 22px; display:flex; flex-direction:column; color:#fff; }
+  .story .badge { align-self:flex-start; background:var(--green); color:#fff; font-size:12px; font-weight:800; padding:6px 12px; border-radius:999px; }
+  .story h3 { font-family:'Outfit',sans-serif; font-weight:800; font-size:27px; line-height:1.05; margin-top:auto; letter-spacing:-0.02em; }
+  .story p { font-size:13.5px; opacity:.9; margin-top:10px; }
+  .story .pill-row { margin-top:16px; display:flex; gap:6px; flex-wrap:wrap; }
+  .story .mini { background:rgba(255,255,255,.16); color:#fff; font-size:11px; font-weight:700; padding:5px 10px; border-radius:999px; }
+
+  .cap { text-align:center; font-size:13px; color:var(--muted); margin-top:14px; font-weight:600; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html"><span class="logo-mark"></span><span class="logo-word">omnify<b>.</b></span></a>
+    <div class="nav-links">
+      <a href="01-discovery.html">Discover</a>
+      <a href="marketing-hero.html">For businesses</a>
+      <a href="marketing-storyboard.html">Demo</a>
+      <a href="index.html">All deliverables</a>
+    </div>
+    <a class="btn btn-primary btn-sm" href="index.html">All deliverables</a>
+  </div>
+</nav>
+
+<section class="stage">
+  <div class="wrap">
+    <div class="stage-head reveal in">
+      <span class="eyebrow">Social creative</span>
+      <h2 class="h-section" style="margin-top:10px;">Built to stop the scroll</h2>
+      <p class="lead" style="margin:14px auto 0;">A square feed post and a vertical story, both in Omnify's playful brand.</p>
+    </div>
+
+    <div class="creatives">
+
+      <!-- SQUARE -->
+      <div>
+        <div class="sq reveal">
+          <span class="deco d1"></span><span class="deco d2"></span><span class="star"></span>
+          <div class="inner">
+            <a class="logo"><span class="logo-mark"></span><span class="logo-word">omnify<b>.</b></span></a>
+            <h2>Stop searching.<br/>Start <em>belonging.</em></h2>
+            <p>Tell us about your kid in one message. We find their class.</p>
+            <span class="btn btn-primary cta">Find their thing</span>
+          </div>
+        </div>
+        <div class="cap">1080 x 1080 feed post</div>
+      </div>
+
+      <!-- STORY -->
+      <div>
+        <div class="story reveal">
+          <img src="https://picsum.photos/seed/omnify-social-kidcraft/520/920" alt="Child enjoying a class" />
+          <div class="grad"></div>
+          <div class="s-inner">
+            <span class="badge">New on Omnify</span>
+            <h3>No more guessing which class.</h3>
+            <p>Just say what your kid loves. AI does the rest.</p>
+            <div class="pill-row"><span class="mini">Free trial</span><span class="mini">Siblings together</span><span class="mini">96% match</span></div>
+          </div>
+        </div>
+        <div class="cap">1080 x 1920 story</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <a class="logo" href="index.html"><span class="logo-mark"></span><span class="logo-word">omnify<b>.</b></span></a>
+    <span>AI Creative Design Intern Assessment.</span>
+  </div>
+</footer>
+
+<script src="assets/omnify.js"></script>
+</body>
+</html>

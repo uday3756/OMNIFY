@@ -1,0 +1,157 @@
+/* ============================================================
+   Omnify - AI-First Service Store | Shared Design System
+   Brand: mint/teal canvas, single green accent, playful shapes.
+   Theme lock: light. Accent lock: --green. Radius scale fixed.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap');
+
+:root {
+  /* Brand palette (from Omnify brand card) */
+  --mint:        #B7ECE6;
+  --mint-soft:   #D7F4F0;
+  --mint-deep:   #8FDDD4;
+  --green:       #16C172;   /* single locked accent */
+  --green-deep:  #0E9F63;
+  --green-ink:   #0A7048;
+  --purple:      #C77DD6;
+  --blue:        #1B4DCC;
+  --coral:       #FF7A59;
+
+  /* Neutrals (warm, never pure black/white) */
+  --ink:         #15211C;
+  --ink-soft:    #3C4A43;
+  --muted:       #6B7B72;
+  --line:        #E4EDE9;
+  --paper:       #FBFDFC;
+  --cream:       #F4FAF8;
+
+  /* Radius scale (locked): cards 24, inputs 14, pills full */
+  --r-card: 24px;
+  --r-input: 14px;
+  --r-pill: 999px;
+
+  /* Shadows tinted to brand, never pure black */
+  --shadow-sm: 0 2px 8px rgba(21, 33, 28, 0.05);
+  --shadow:    0 14px 40px rgba(14, 70, 50, 0.10);
+  --shadow-lg: 0 30px 70px rgba(14, 70, 50, 0.16);
+
+  --maxw: 1180px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--cream);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, .display { font-family: 'Outfit', system-ui, sans-serif; }
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+/* ---------- Logo ---------- */
+.logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
+.logo-mark {
+  width: 38px; height: 38px; border-radius: 11px;
+  background: var(--green); position: relative; flex: none;
+  box-shadow: var(--shadow-sm);
+}
+.logo-mark span {
+  position: absolute; width: 5px; height: 5px; border-radius: 50%;
+  background: #fff; top: 50%; left: 50%; margin: -2.5px;
+  transform-origin: 0 0;
+}
+.logo-word {
+  font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 24px;
+  letter-spacing: -0.02em; color: var(--ink);
+}
+.logo-word b { color: var(--green); font-weight: 800; }
+
+/* ---------- Nav ---------- */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(251, 253, 252, 0.82);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+  height: 68px; display: flex; align-items: center;
+}
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links a { color: var(--ink-soft); text-decoration: none; font-weight: 500; font-size: 15px; transition: color .2s; }
+.nav-links a:hover { color: var(--green-deep); }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 15px;
+  padding: 13px 24px; border-radius: var(--r-pill); border: none; cursor: pointer;
+  text-decoration: none; white-space: nowrap;
+  transition: transform .15s var(--ease), box-shadow .2s, background .2s;
+}
+.btn:active { transform: translateY(1px) scale(0.985); }
+.btn-primary { background: var(--green); color: #fff; box-shadow: 0 8px 20px rgba(22,193,114,0.32); }
+.btn-primary:hover { background: var(--green-deep); transform: translateY(-1px); }
+.btn-ghost { background: #fff; color: var(--ink); border: 1.5px solid var(--line); }
+.btn-ghost:hover { border-color: var(--mint-deep); transform: translateY(-1px); }
+.btn-sm { padding: 9px 16px; font-size: 14px; }
+.btn-lg { padding: 16px 32px; font-size: 17px; }
+
+/* ---------- Pills / badges ---------- */
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 13px; border-radius: var(--r-pill);
+  font-size: 13px; font-weight: 600; font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.pill-mint { background: var(--mint-soft); color: var(--green-ink); }
+.pill-coral { background: #FFE7E0; color: #C2452A; }
+.pill-purple { background: #F3E5F7; color: #8A3D9C; }
+.pill-blue { background: #E2EAFB; color: var(--blue); }
+.pill-ai {
+  background: linear-gradient(100deg, var(--green), var(--mint-deep));
+  color: #fff;
+}
+
+/* ---------- AI sparkle glyph (inline) ---------- */
+.spark { width: 1em; height: 1em; display: inline-block; vertical-align: -0.12em; }
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--paper); border-radius: var(--r-card);
+  border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+}
+
+/* ---------- Section heading ---------- */
+.eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green-deep); }
+.h-section { font-size: clamp(28px, 4vw, 44px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; }
+.lead { font-size: 18px; color: var(--ink-soft); max-width: 60ch; }
+
+/* ---------- Playful background shapes ---------- */
+.blob { position: absolute; pointer-events: none; z-index: 0; }
+
+/* ---------- Footer ---------- */
+.foot { padding: 40px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+.foot .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+
+/* ---------- Reveal on scroll ---------- */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.reveal.in { opacity: 1; transform: none; }
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .wrap { padding: 0 18px; }
+}

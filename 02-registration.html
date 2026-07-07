@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Omnify AI - Register</title>
+<link rel="stylesheet" href="assets/omnify.css" />
+<style>
+  .reg { padding: 48px 0 90px; background: var(--cream); min-height: 100dvh; }
+  .reg-top { max-width: 900px; margin: 0 auto 32px; }
+  .reg-top h1 { font-size: clamp(28px,4vw,40px); font-weight: 800; letter-spacing: -0.02em; }
+  .steps { display: flex; gap: 10px; margin-top: 16px; }
+  .step { flex: 1; height: 6px; border-radius: 999px; background: var(--line); }
+  .step.done { background: var(--green); }
+
+  .layout { display: grid; grid-template-columns: 1fr 360px; gap: 28px; align-items: start; max-width: 1000px; margin: 0 auto; }
+
+  .block { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-card); padding: 24px; box-shadow: var(--shadow-sm); margin-bottom: 20px; }
+  .block-title { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .block-title h3 { font-size: 18px; font-weight: 700; }
+  .ai-note { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--green-deep); background: var(--mint-soft); padding: 5px 11px; border-radius: 999px; }
+
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 13px; font-weight: 700; color: var(--ink-soft); margin-bottom: 6px; }
+  .field input, .field select {
+    width: 100%; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: var(--r-input);
+    font-family: inherit; font-size: 15px; color: var(--ink); background: #fff; outline: none; transition: border-color .2s;
+  }
+  .field input:focus, .field select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(22,193,114,.12); }
+  .prefill { border-color: var(--mint-deep); background: var(--cream); }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .slots { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+  .slot {
+    border: 1.5px solid var(--line); border-radius: 14px; padding: 12px; text-align: center; cursor: pointer;
+    background: #fff; transition: all .18s var(--ease); position: relative;
+  }
+  .slot:hover { border-color: var(--mint-deep); }
+  .slot.sel { border-color: var(--green); background: var(--mint-soft); }
+  .slot .d { font-weight: 700; font-size: 15px; }
+  .slot .t { font-size: 13px; color: var(--muted); }
+  .slot .best { position: absolute; top: -9px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: 800; color: #fff; background: var(--green); padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+
+  .sibling { display: flex; align-items: center; gap: 14px; padding: 14px; border: 1.5px dashed var(--mint-deep); border-radius: 16px; background: var(--cream); }
+  .sibling img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+  .toggle { width: 46px; height: 28px; border-radius: 999px; background: var(--line); position: relative; cursor: pointer; flex: none; transition: background .2s; border: none; }
+  .toggle::after { content:''; position: absolute; width: 22px; height: 22px; border-radius: 50%; background: #fff; top: 3px; left: 3px; transition: left .2s var(--ease); box-shadow: var(--shadow-sm); }
+  .toggle.on { background: var(--green); }
+  .toggle.on::after { left: 21px; }
+
+  /* trial vs membership inline */
+  .choice { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .opt { border: 1.5px solid var(--line); border-radius: 16px; padding: 16px; cursor: pointer; transition: all .18s var(--ease); position: relative; }
+  .opt:hover { border-color: var(--mint-deep); }
+  .opt.sel { border-color: var(--green); box-shadow: 0 0 0 3px rgba(22,193,114,.12); }
+  .opt .rec-tag { position: absolute; top: 14px; right: 14px; font-size: 11px; font-weight: 800; color: var(--green-deep); }
+  .opt h4 { font-size: 16px; font-weight: 700; }
+  .opt .p { font-family:'Outfit',sans-serif; font-weight: 800; font-size: 22px; margin: 6px 0 4px; }
+  .opt small { color: var(--muted); font-size: 13px; }
+
+  /* summary */
+  .summary { position: sticky; top: 88px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-card); padding: 22px; box-shadow: var(--shadow); }
+  .sum-item { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+  .sum-item.total { border: none; font-weight: 800; font-size: 18px; font-family:'Outfit',sans-serif; padding-top: 14px; }
+  .sum-item .lbl { color: var(--ink-soft); }
+  .save-note { background: var(--mint-soft); color: var(--green-ink); border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 600; margin: 14px 0; display:flex; gap:8px; align-items:flex-start; }
+
+  @media (max-width: 880px) { .layout { grid-template-columns: 1fr; } .summary { position: static; } .slots { grid-template-columns: repeat(2,1fr); } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html"><span class="logo-mark"></span><span class="logo-word">omnify<b>.</b></span></a>
+    <div class="nav-links">
+      <a href="01-discovery.html">Discover</a>
+      <a href="02-registration.html">Register</a>
+      <a href="marketing-hero.html">For businesses</a>
+      <a href="index.html">All deliverables</a>
+    </div>
+    <a class="btn btn-primary btn-sm" href="03-ai-decision.html">Ask AI to decide</a>
+  </div>
+</nav>
+
+<section class="reg">
+  <div class="wrap">
+    <div class="reg-top">
+      <span class="pill pill-mint">Guided by Omnify AI</span>
+      <h1 style="margin-top:12px;">Almost there. We filled in what you told us.</h1>
+      <div class="steps"><span class="step done"></span><span class="step done"></span><span class="step done"></span><span class="step"></span></div>
+    </div>
+
+    <div class="layout">
+      <!-- LEFT: guided form -->
+      <div>
+
+        <div class="block reveal in">
+          <div class="block-title">
+            <h3>Who is joining</h3>
+            <span class="ai-note">
+              <svg class="spark" viewBox="0 0 24 24" fill="#0E9F63"><path d="M12 2l1.8 5.5L19 9l-5.2 1.5L12 16l-1.8-5.5L5 9l5.2-1.5z"/></svg>
+              Prefilled from your chat
+            </span>
+          </div>
+          <div class="field"><label>Program</label><input class="prefill" value="Little Builders Robotics (Free trial)" readonly /></div>
+          <div class="row2">
+            <div class="field"><label>Child's name</label><input placeholder="e.g. Aarav" /></div>
+            <div class="field"><label>Age</label><input class="prefill" value="7" /></div>
+          </div>
+        </div>
+
+        <div class="block reveal in">
+          <div class="block-title">
+            <h3>Pick a time</h3>
+            <span class="ai-note">
+              <svg class="spark" viewBox="0 0 24 24" fill="#0E9F63"><path d="M12 2l1.8 5.5L19 9l-5.2 1.5L12 16l-1.8-5.5L5 9l5.2-1.5z"/></svg>
+              Best fit for your weekends
+            </span>
+          </div>
+          <div class="slots">
+            <div class="slot sel"><span class="best">AI pick</span><div class="d">Sat</div><div class="t">10:00 AM</div></div>
+            <div class="slot"><div class="d">Sat</div><div class="t">2:00 PM</div></div>
+            <div class="slot"><div class="d">Sun</div><div class="t">10:00 AM</div></div>
+          </div>
+        </div>
+
+        <div class="block reveal in">
+          <div class="block-title"><h3>Bring a sibling</h3></div>
+          <div class="sibling">
+            <img src="https://picsum.photos/seed/omnify-daughter5/80/80" alt="Sibling" />
+            <div style="flex:1;">
+              <div style="font-weight:700;font-size:15px;">Add your 5-year-old to the same slot</div>
+              <div style="font-size:13px;color:var(--muted);">AI found a buddy track at Sat 10:00 AM, same room.</div>
+            </div>
+            <button class="toggle" id="sibToggle" aria-label="Add sibling"></button>
+          </div>
+        </div>
+
+        <div class="block reveal in">
+          <div class="block-title">
+            <h3>Trial or membership</h3>
+            <a href="03-ai-decision.html" class="ai-note">Why this pick?</a>
+          </div>
+          <div class="choice">
+            <div class="opt sel" data-plan="trial" data-price="0">
+              <span class="rec-tag">AI recommends</span>
+              <h4>Start with a trial</h4>
+              <div class="p">$0</div>
+              <small>One free class. Decide after you see if it clicks.</small>
+            </div>
+            <div class="opt" data-plan="member" data-price="120">
+              <h4>Go membership</h4>
+              <div class="p">$120<small>/mo</small></div>
+              <small>Best value if you already know they will love it.</small>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: summary -->
+      <aside class="summary">
+        <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Your registration</h3>
+        <div class="sum-item"><span class="lbl">Little Builders Robotics</span><span id="basePrice">Free trial</span></div>
+        <div class="sum-item" id="sibLine" style="display:none;"><span class="lbl">Sibling buddy track</span><span>Free trial</span></div>
+        <div class="sum-item"><span class="lbl">Sat 10:00 AM</span><span>x1</span></div>
+        <div class="save-note">
+          <svg class="spark" viewBox="0 0 24 24" fill="#0A7048"><path d="M12 2l1.8 5.5L19 9l-5.2 1.5L12 16l-1.8-5.5L5 9l5.2-1.5z"/></svg>
+          <span id="saveText">Trial keeps your first class free. You can upgrade anytime.</span>
+        </div>
+        <div class="sum-item total"><span>Due today</span><span id="total">$0</span></div>
+        <a class="btn btn-primary btn-lg" style="width:100%;margin-top:16px;" href="#">Confirm registration</a>
+        <p style="text-align:center;font-size:12px;color:var(--muted);margin-top:10px;">No card needed for the free trial.</p>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <a class="logo" href="index.html"><span class="logo-mark"></span><span class="logo-word">omnify<b>.</b></span></a>
+    <span>AI Creative Design Intern Assessment. Prototype, not a live store.</span>
+  </div>
+</footer>
+
+<script src="assets/omnify.js"></script>
+<script>
+(function () {
+  // slot select
+  document.querySelectorAll('.slot').forEach(function (s) {
+    s.addEventListener('click', function () {
+      document.querySelectorAll('.slot').forEach(function (x){ x.classList.remove('sel'); });
+      s.classList.add('sel');
+    });
+  });
+
+  var sibToggle = document.getElementById('sibToggle');
+  var sibLine = document.getElementById('sibLine');
+  var sibOn = false;
+
+  function plan() {
+    var sel = document.querySelector('.opt.sel');
+    return { type: sel.dataset.plan, price: parseInt(sel.dataset.price, 10) };
+  }
+  function recompute() {
+    var p = plan();
+    var base = document.getElementById('basePrice');
+    var total = document.getElementById('total');
+    var saveText = document.getElementById('saveText');
+    if (p.type === 'trial') {
+      base.textContent = 'Free trial';
+      total.textContent = '$0';
+      saveText.textContent = 'Trial keeps your first class free. You can upgrade anytime.';
+      sibLine.querySelector('span:last-child').textContent = 'Free trial';
+    } else {
+      base.textContent = '$120/mo';
+      total.textContent = sibOn ? '$216/mo' : '$120/mo';
+      saveText.textContent = sibOn ? 'Sibling discount applied. You save $24 every month.' : 'Membership unlocks all weekend sessions.';
+      sibLine.querySelector('span:last-child').textContent = '$96/mo';
+    }
+  }
+
+  sibToggle.addEventListener('click', function () {
+    sibOn = !sibOn;
+    sibToggle.classList.toggle('on', sibOn);
+    sibLine.style.display = sibOn ? 'flex' : 'none';
+    recompute();
+  });
+
+  document.querySelectorAll('.opt').forEach(function (o) {
+    o.addEventListener('click', function () {
+      document.querySelectorAll('.opt').forEach(function (x){ x.classList.remove('sel'); });
+      o.classList.add('sel');
+      recompute();
+    });
+  });
+})();
+</script>
+</body>
+</html>
