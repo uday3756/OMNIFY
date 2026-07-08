@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Party Invitation - Omnify</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --mint: #C8F7DC;
+      --teal: #4ECDC4;
+      --green: #16C172;
+      --dark-green: #0E9F63;
+      --accent: #FF7A59;
+      --cream: #FFFBF4;
+      --lavender: #EEE9FF;
+      --text: #1C2B24;
+      --muted: #6B7B72;
+      --border: #E8E8E8;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 16px 20px;
+      margin-bottom: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 12px;
+    }
+
+    .logo {
+      font-family: 'Outfit', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--green);
+      cursor: pointer;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-small {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: white;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-small:hover {
+      border-color: var(--teal);
+      background: var(--cream);
+    }
+
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .invitation-card {
+      background: white;
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      background: linear-gradient(135deg, rgba(22, 193, 114, 0.03), rgba(78, 205, 196, 0.03));
+    }
+
+    .invitation-header {
+      text-align: center;
+      margin-bottom: 40px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 24px;
+    }
+
+    .party-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .invitation-header h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .invitation-header p {
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .invitation-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .details-section h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .detail-item {
+      margin-bottom: 16px;
+    }
+
+    .detail-label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .detail-value {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .qr-section {
+      text-align: center;
+    }
+
+    .qr-section h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text);
+      text-align: center;
+    }
+
+    #qrCode {
+      display: inline-block;
+      padding: 16px;
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+
+    .qr-instruction {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .invitation-footer {
+      background: linear-gradient(135deg, var(--mint), var(--lavender));
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .footer-text {
+      color: var(--text);
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .footer-link {
+      color: var(--green);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--green), var(--dark-green));
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(22, 193, 114, 0.3);
+    }
+
+    .btn-secondary {
+      background: white;
+      border: 2px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--teal);
+      background: var(--cream);
+    }
+
+    .share-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .share-btn {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: white;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .share-btn:hover {
+      background: var(--cream);
+      border-color: var(--teal);
+    }
+
+    .copy-feedback {
+      display: none;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--green);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      animation: slideIn 0.3s ease;
+      z-index: 1000;
+    }
+
+    .copy-feedback.show {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @media (max-width: 768px) {
+      .invitation-card {
+        padding: 24px;
+      }
+
+      .invitation-header h1 {
+        font-size: 24px;
+      }
+
+      .invitation-content {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .share-options {
+        grid-template-columns: 1fr;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo" onclick="goHome()">🎉 Omnify</div>
+    <div class="header-actions">
+      <button class="btn-small" onclick="printInvitation()">🖨️ Print</button>
+      <button class="btn-small" onclick="goHome()">Back</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="invitation-card">
+      <div class="invitation-header">
+        <div class="party-icon" id="partyIcon">🎈</div>
+        <h1 id="invitationTitle">You're Invited!</h1>
+        <p id="invitationSubtitle">Join us for an amazing party experience</p>
+      </div>
+
+      <div class="invitation-content">
+        <div class="details-section">
+          <h2>Party Details</h2>
+
+          <div class="detail-item">
+            <div class="detail-label">Birthday Child</div>
+            <div class="detail-value" id="detailChild">-</div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-label">Date</div>
+            <div class="detail-value" id="detailDate">-</div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-label">Time</div>
+            <div class="detail-value" id="detailTime">-</div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-label">Party Type</div>
+            <div class="detail-value" id="detailTheme">-</div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-label">Guest Count</div>
+            <div class="detail-value" id="detailGuests">-</div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-label">Special Requirements</div>
+            <div class="detail-value" id="detailRequirements" style="font-size: 14px; color: var(--muted);">-</div>
+          </div>
+        </div>
+
+        <div class="qr-section">
+          <h2>Share This Party</h2>
+          <div id="qrCode"></div>
+          <div class="qr-instruction">Scan to view party details</div>
+        </div>
+      </div>
+
+      <div class="invitation-footer">
+        <div class="footer-text">
+          Share this invitation with family and friends!
+        </div>
+        <div class="share-options">
+          <button class="share-btn" onclick="shareVia('email')">📧 Email</button>
+          <button class="share-btn" onclick="shareVia('sms')">💬 SMS</button>
+          <button class="share-btn" onclick="copyInvitationLink()">🔗 Copy Link</button>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn btn-secondary" onclick="goHome()">Back to Dashboard</button>
+        <button class="btn btn-primary" onclick="downloadInvitation()">📥 Download</button>
+      </div>
+    </div>
+  </main>
+
+  <div class="copy-feedback" id="copyFeedback">✓ Copied to clipboard!</div>
+
+  <script type="module">
+    import { bookingState } from '../lib/booking-state.js';
+
+    // Get booking ID from URL
+    const bookingId = new URLSearchParams(window.location.search).get('id');
+    const booking = bookingState.getBooking(bookingId);
+
+    if (!booking) {
+      document.body.innerHTML = '<div style="padding: 40px; text-align: center;"><h2>Booking not found</h2></div>';
+    } else {
+      // Populate invitation
+      const date = new Date(booking.date);
+      const dateStr = date.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+
+      document.getElementById('partyIcon').textContent = booking.icon;
+      document.getElementById('invitationTitle').textContent = `${booking.childName}'s Party!`;
+      document.getElementById('invitationSubtitle').textContent = `You're invited to celebrate ${booking.childName}'s ${booking.childAge}th birthday!`;
+
+      document.getElementById('detailChild').textContent = `${booking.childName}, ${booking.childAge} years old`;
+      document.getElementById('detailDate').textContent = dateStr;
+      document.getElementById('detailTime').textContent = booking.partyTime;
+      document.getElementById('detailTheme').textContent = booking.partyName;
+      document.getElementById('detailGuests').textContent = `${booking.guestCount} kids`;
+      document.getElementById('detailRequirements').textContent = booking.specialRequirements || 'None';
+
+      // Generate QR code
+      const invitationUrl = window.location.href;
+      new QRCode(document.getElementById('qrCode'), {
+        text: invitationUrl,
+        width: 200,
+        height: 200,
+        colorDark: '#16C172',
+        colorLight: '#FFFBF4',
+      });
+    }
+
+    window.goHome = () => {
+      window.location.href = '../dashboard/index.html';
+    };
+
+    window.printInvitation = () => {
+      window.print();
+    };
+
+    window.downloadInvitation = () => {
+      // In a real app, this would generate a PDF
+      alert('Invitation download feature coming soon!');
+    };
+
+    window.shareVia = (method) => {
+      const url = window.location.href;
+      const title = document.getElementById('invitationTitle').textContent;
+
+      if (method === 'email') {
+        window.location.href = `mailto:?subject=${title}&body=You're invited! ${url}`;
+      } else if (method === 'sms') {
+        window.location.href = `sms:?body=You're invited to ${title}! ${url}`;
+      }
+    };
+
+    window.copyInvitationLink = () => {
+      const url = window.location.href;
+      navigator.clipboard.writeText(url).then(() => {
+        const feedback = document.getElementById('copyFeedback');
+        feedback.classList.add('show');
+        setTimeout(() => feedback.classList.remove('show'), 2000);
+      });
+    };
+  </script>
+</body>
+</html>

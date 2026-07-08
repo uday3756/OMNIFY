@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Omnify Party Booking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --mint: #C8F7DC;
+      --teal: #4ECDC4;
+      --green: #16C172;
+      --dark-green: #0E9F63;
+      --accent: #FF7A59;
+      --cream: #FFFBF4;
+      --lavender: #EEE9FF;
+      --text: #1C2B24;
+      --muted: #6B7B72;
+      --border: #E8E8E8;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: linear-gradient(135deg, var(--cream) 0%, var(--lavender) 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .logo h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    .logo p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      background: var(--cream);
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: var(--teal);
+      background: white;
+    }
+
+    .form-group.error input {
+      border-color: var(--accent);
+      background: rgba(255, 122, 89, 0.05);
+    }
+
+    .error-message {
+      color: var(--accent);
+      font-size: 12px;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .form-group.error .error-message {
+      display: block;
+    }
+
+    .password-strength {
+      display: flex;
+      gap: 4px;
+      margin-top: 6px;
+      height: 4px;
+    }
+
+    .strength-bar {
+      flex: 1;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      transition: all 0.2s ease;
+    }
+
+    .strength-bar.weak { background: var(--accent); }
+    .strength-bar.medium { background: #FFB366; }
+    .strength-bar.strong { background: var(--green); }
+
+    .terms-check {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 20px 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .terms-check input {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      cursor: pointer;
+      accent-color: var(--green);
+    }
+
+    .terms-check a {
+      color: var(--teal);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .btn-register {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--green), var(--dark-green));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: all 0.3s ease;
+      margin-top: 8px;
+    }
+
+    .btn-register:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(22, 193, 114, 0.3);
+    }
+
+    .btn-register:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .footer-text {
+      text-align: center;
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .footer-text a {
+      color: var(--green);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .success-state {
+      text-align: center;
+      padding: 32px 0;
+      display: none;
+    }
+
+    .success-state.show {
+      display: block;
+    }
+
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(22, 193, 114, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 16px;
+    }
+
+    .success-state h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .success-state p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .btn-continue {
+      width: 100%;
+      padding: 12px;
+      background: var(--green);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 24px;
+      }
+
+      .logo h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <h1>🎉 Omnify</h1>
+      <p>Party Booking Platform</p>
+    </div>
+
+    <div class="card">
+      <div id="formContainer">
+        <form id="registerForm">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" placeholder="Your full name" required>
+            <div class="error-message">Name is required</div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="parent@example.com" required>
+            <div class="error-message">Email already registered or invalid</div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="At least 8 characters" required>
+            <div class="password-strength">
+              <div class="strength-bar"></div>
+              <div class="strength-bar"></div>
+              <div class="strength-bar"></div>
+            </div>
+            <div class="error-message">Password must be at least 8 characters</div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirm">Confirm Password</label>
+            <input type="password" id="confirm" name="confirm" placeholder="••••••••" required>
+            <div class="error-message">Passwords don't match</div>
+          </div>
+
+          <div class="terms-check">
+            <input type="checkbox" id="terms" required>
+            <label for="terms" style="margin: 0; font-weight: 400;">
+              I agree to the <a href="#terms">Terms of Service</a> and <a href="#privacy">Privacy Policy</a>
+            </label>
+          </div>
+
+          <button type="submit" class="btn-register">Create Account</button>
+        </form>
+      </div>
+
+      <div id="successState" class="success-state">
+        <div class="success-icon">✨</div>
+        <h2>Welcome to Omnify!</h2>
+        <p>Your account has been created successfully.</p>
+        <button class="btn-continue" onclick="window.location.href='../dashboard/index.html'">
+          Go to Dashboard
+        </button>
+      </div>
+
+      <div class="footer-text">
+        Already have an account? <a href="login.html">Sign in</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { auth } from '../lib/auth.js';
+
+    const form = document.getElementById('registerForm');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const confirmInput = document.getElementById('confirm');
+    const termsCheckbox = document.getElementById('terms');
+    const submitBtn = document.querySelector('.btn-register');
+    const formContainer = document.getElementById('formContainer');
+    const successState = document.getElementById('successState');
+
+    // Password strength indicator
+    passwordInput.addEventListener('input', () => {
+      const strength = calculateStrength(passwordInput.value);
+      const bars = document.querySelectorAll('.strength-bar');
+      bars.forEach((bar, index) => {
+        bar.className = 'strength-bar';
+        if (index < strength) {
+          bar.classList.add(['weak', 'medium', 'strong'][strength - 1]);
+        }
+      });
+    });
+
+    function calculateStrength(password) {
+      if (password.length < 8) return 1;
+      if (password.length < 12) return 2;
+      return 3;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      const confirm = confirmInput.value;
+
+      // Validation
+      let hasError = false;
+
+      if (!name) {
+        nameInput.parentElement.classList.add('error');
+        hasError = true;
+      }
+
+      if (password.length < 8) {
+        passwordInput.parentElement.classList.add('error');
+        hasError = true;
+      }
+
+      if (password !== confirm) {
+        confirmInput.parentElement.classList.add('error');
+        hasError = true;
+      }
+
+      if (!termsCheckbox.checked) {
+        termsCheckbox.parentElement.style.borderLeft = '3px solid var(--accent)';
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+      try {
+        auth.register(name, email, password);
+        formContainer.style.display = 'none';
+        successState.classList.add('show');
+      } catch (err) {
+        emailInput.parentElement.classList.add('error');
+        setTimeout(() => {
+          emailInput.parentElement.classList.remove('error');
+        }, 2000);
+      }
+    });
+
+    // Clear errors on input
+    [nameInput, emailInput, passwordInput, confirmInput].forEach(input => {
+      input.addEventListener('focus', () => {
+        input.parentElement.classList.remove('error');
+      });
+    });
+
+    termsCheckbox.addEventListener('change', () => {
+      termsCheckbox.parentElement.style.borderLeft = 'none';
+    });
+  </script>
+</body>
+</html>

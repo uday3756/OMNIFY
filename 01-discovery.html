@@ -424,24 +424,24 @@
     }, tagTime + 400);
   }
 
-  var DEFAULT = msg.value.trim();
   var hint = document.getElementById('hint');
-  var cleared = false;
-  // Treat the prefilled text as an example: clear it the moment the parent engages.
+
+  // Clear the example text on first focus/input (one-time)
   function clearExample() {
-    if (!cleared && msg.value.trim() === DEFAULT) { msg.value = ''; }
-    cleared = true;
+    if (msg.dataset.cleared) return;
+    msg.dataset.cleared = '1';
+    msg.value = '';
   }
   msg.addEventListener('focus', clearExample);
-  msg.addEventListener('input', function () { cleared = true; });
 
   function run() {
-    if (!msg.value.trim()) {
-      // Nothing to analyze yet. Nudge instead of running on an empty or example value.
+    var text = msg.value.trim();
+    if (!text) {
       msg.focus();
-      if (hint) { hint.textContent = 'Tell us about your kid first, or tap the mic.'; hint.style.color = 'var(--coral)'; }
+      if (hint) hint.textContent = 'Type or tap the mic to tell us about your kid.';
       return;
     }
+
     analysis.classList.add('show');
     understood.style.display = 'none';
     tagsWrap.innerHTML = '';
@@ -460,8 +460,9 @@
         thinktext.textContent = 'Here is what we understood.';
         reveal(data);
       })
-      .catch(function () {
+      .catch(function (err) {
         // Offline / local-file / API down: use the scripted demo so it always works.
+        console.log('AI fetch error, using fallback:', err);
         thinktext.textContent = 'Here is what we understood.';
         reveal(FALLBACK);
       });

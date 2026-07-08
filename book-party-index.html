@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Omnify - AI-First Party Booking Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --mint: #C8F7DC;
+      --teal: #4ECDC4;
+      --green: #16C172;
+      --dark-green: #0E9F63;
+      --accent: #FF7A59;
+      --cream: #FFFBF4;
+      --lavender: #EEE9FF;
+      --text: #1C2B24;
+      --muted: #6B7B72;
+      --border: #E8E8E8;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Outfit', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    .header-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .header-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+      font-size: 14px;
+      transition: all 0.2s ease;
+    }
+
+    .header-links a:hover {
+      color: var(--green);
+    }
+
+    .btn-login {
+      padding: 10px 20px;
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-login:hover {
+      border-color: var(--teal);
+      background: var(--cream);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--muted);
+      margin-bottom: 32px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      padding: 14px 32px;
+      background: linear-gradient(135deg, var(--green), var(--dark-green));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(22, 193, 114, 0.3);
+    }
+
+    .btn-secondary {
+      padding: 14px 32px;
+      background: white;
+      border: 2px solid var(--border);
+      color: var(--text);
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--teal);
+      background: var(--cream);
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 80px;
+    }
+
+    .feature-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+    }
+
+    .feature-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .feature-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .feature-desc {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .platforms {
+      background: linear-gradient(135deg, rgba(22, 193, 114, 0.08), rgba(78, 205, 196, 0.08));
+      border-radius: 20px;
+      padding: 60px 40px;
+      text-align: center;
+      border: 1px solid rgba(78, 205, 196, 0.2);
+    }
+
+    .platforms h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .platforms p {
+      color: var(--muted);
+      margin-bottom: 32px;
+      font-size: 16px;
+    }
+
+    .platform-links {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .platform-link {
+      padding: 12px 28px;
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .platform-link:hover {
+      border-color: var(--green);
+      background: var(--cream);
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+      }
+
+      .btn-primary, .btn-secondary {
+        width: 100%;
+      }
+
+      .platforms {
+        padding: 40px 24px;
+      }
+
+      .platform-links {
+        flex-direction: column;
+      }
+
+      .platform-link {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">🎉 Omnify</div>
+    <div class="header-links">
+      <a href="index.html">Home</a>
+      <a href="#features">Features</a>
+      <a href="auth/login.html" class="btn-login">Sign In</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h1>Plan the Perfect Party 🎉</h1>
+      <p>Book amazing party experiences for your child with Omnify's AI-powered platform. Choose themes, invite guests, and create unforgettable memories.</p>
+      <div class="cta-buttons">
+        <a href="auth/register.html" class="btn-primary">Get Started</a>
+        <a href="auth/login.html" class="btn-secondary">Already a Member?</a>
+      </div>
+    </div>
+
+    <div id="features" class="features">
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <div class="feature-title">Amazing Themes</div>
+        <div class="feature-desc">Choose from Robotics, Art, Dance, Science, Sports, and Gaming party themes tailored for every age.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">👥</div>
+        <div class="feature-title">Easy Invitations</div>
+        <div class="feature-desc">Create beautiful invitation cards with QR codes. Share via email, SMS, or social media.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🎁</div>
+        <div class="feature-title">Add-Ons & Customization</div>
+        <div class="feature-desc">Add cake, decorations, photography, DJ services, and more to personalize the party.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <div class="feature-title">Transparent Pricing</div>
+        <div class="feature-desc">Clear pricing from $25 base + per-guest rates. See the total before confirming your booking.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <div class="feature-title">AI Assistant</div>
+        <div class="feature-desc">Get instant answers and recommendations from PartyBot, our helpful AI assistant.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Booking Management</div>
+        <div class="feature-desc">Manage all your party bookings in one place. Edit, reschedule, or share from your dashboard.</div>
+      </div>
+    </div>
+
+    <div class="platforms">
+      <h2>Explore More</h2>
+      <p>Check out other Omnify platforms and experiences</p>
+      <div class="platform-links">
+        <a href="01-discovery.html" class="platform-link">🎯 AI Discovery</a>
+        <a href="02-registration.html" class="platform-link">📝 Activity Registration</a>
+        <a href="03-ai-decision.html" class="platform-link">🤔 AI Decision Helper</a>
+        <a href="dashboard/index.html" class="platform-link">📊 Dashboard</a>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    // PartyBot on this page too
+    import { PartyBot } from './components/party-bot.js';
+  </script>
+</body>
+</html>

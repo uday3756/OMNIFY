@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Party - Omnify</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --mint: #C8F7DC;
+      --teal: #4ECDC4;
+      --green: #16C172;
+      --dark-green: #0E9F63;
+      --accent: #FF7A59;
+      --cream: #FFFBF4;
+      --lavender: #EEE9FF;
+      --text: #1C2B24;
+      --muted: #6B7B72;
+      --border: #E8E8E8;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 40px;
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Outfit', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--green);
+      cursor: pointer;
+    }
+
+    .progress-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .progress-dots {
+      display: flex;
+      gap: 8px;
+      margin: 0 12px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .dot.active {
+      background: var(--green);
+      transform: scale(1.3);
+    }
+
+    .dot.completed {
+      background: var(--green);
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .step-container {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .step-container.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .step-desc {
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="date"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      background: var(--cream);
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="date"]:focus,
+    input[type="number"]:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--teal);
+      background: white;
+    }
+
+    .input-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .theme-card {
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .theme-card:hover {
+      border-color: var(--teal);
+    }
+
+    .theme-card.selected {
+      border-color: var(--green);
+      background: rgba(22, 193, 114, 0.05);
+    }
+
+    .theme-icon {
+      font-size: 40px;
+      margin-bottom: 8px;
+    }
+
+    .theme-name {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .addon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .addon-card {
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .addon-card:hover {
+      border-color: var(--teal);
+    }
+
+    .addon-card.selected {
+      border-color: var(--green);
+      background: rgba(22, 193, 114, 0.05);
+    }
+
+    .addon-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 8px;
+    }
+
+    .addon-name {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .addon-price {
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    .addon-desc {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .summary-box {
+      background: linear-gradient(135deg, rgba(22, 193, 114, 0.08), rgba(78, 205, 196, 0.08));
+      border-radius: 16px;
+      padding: 20px;
+      margin-top: 32px;
+      border: 1px solid rgba(78, 205, 196, 0.2);
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .summary-row.total {
+      border-top: 2px solid var(--border);
+      padding-top: 12px;
+      margin-top: 12px;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--green);
+    }
+
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .btn {
+      padding: 12px 28px;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: all 0.3s ease;
+    }
+
+    .btn-back {
+      background: white;
+      border: 2px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-back:hover {
+      border-color: var(--muted);
+    }
+
+    .btn-next {
+      background: linear-gradient(135deg, var(--green), var(--dark-green));
+      color: white;
+      margin-left: auto;
+    }
+
+    .btn-next:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(22, 193, 114, 0.3);
+    }
+
+    .confirmation-content {
+      text-align: center;
+    }
+
+    .success-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+      animation: bounce 0.6s ease;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .confirmation-content h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .confirmation-content p {
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    .booking-ref {
+      background: var(--cream);
+      padding: 16px;
+      border-radius: 12px;
+      margin: 24px 0;
+      font-family: monospace;
+      font-size: 13px;
+      color: var(--text);
+      word-break: break-all;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 24px;
+    }
+
+    .btn-action {
+      padding: 12px 24px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: white;
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: all 0.2s ease;
+    }
+
+    .btn-action:hover {
+      border-color: var(--teal);
+      background: var(--cream);
+    }
+
+    .btn-action.primary {
+      background: var(--green);
+      color: white;
+      border-color: var(--green);
+    }
+
+    @media (max-width: 768px) {
+      main {
+        margin: 20px auto;
+      }
+
+      .step-container {
+        padding: 24px;
+      }
+
+      .step-title {
+        font-size: 22px;
+      }
+
+      .input-group {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .theme-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .addon-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .navigation {
+        flex-direction: column;
+      }
+
+      .btn-next {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo" onclick="goHome()">🎉 Omnify</div>
+    <div class="progress-indicator">
+      <span id="stepCounter">Step 1 of 6</span>
+      <div class="progress-dots" id="progressDots"></div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Step 1: Child Information -->
+    <div class="step-container active" data-step="1">
+      <h2 class="step-title">Tell us about the birthday child</h2>
+      <p class="step-desc">Let's start with some basic information about the birthday kid.</p>
+
+      <div class="form-group">
+        <label>Child's Name *</label>
+        <input type="text" id="childName" placeholder="e.g., Emma" required>
+      </div>
+
+      <div class="input-group">
+        <div class="form-group">
+          <label>Age *</label>
+          <input type="number" id="childAge" min="4" max="17" placeholder="e.g., 8" required>
+        </div>
+        <div class="form-group">
+          <label>Gender</label>
+          <select id="childGender">
+            <option value="">Prefer not to say</option>
+            <option value="boy">Boy</option>
+            <option value="girl">Girl</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Interests (comma-separated)</label>
+        <input type="text" id="childInterests" placeholder="e.g., Robots, Gaming, Art">
+      </div>
+
+      <div class="input-group">
+        <div class="form-group">
+          <label>Preferred Party Date *</label>
+          <input type="date" id="partyDate" required>
+        </div>
+        <div class="form-group">
+          <label>Time *</label>
+          <select id="partyTime" required>
+            <option value="">Select time</option>
+            <option value="10:00 AM">10:00 AM</option>
+            <option value="12:00 PM">12:00 PM</option>
+            <option value="2:00 PM">2:00 PM</option>
+            <option value="4:00 PM">4:00 PM</option>
+            <option value="6:00 PM">6:00 PM</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="navigation">
+        <button class="btn btn-back" onclick="goHome()">Cancel</button>
+        <button class="btn btn-next" onclick="nextStep()">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Theme Selection -->
+    <div class="step-container" data-step="2">
+      <h2 class="step-title">Choose a party theme</h2>
+      <p class="step-desc">Pick a theme that matches your child's interests.</p>
+
+      <div class="theme-grid" id="themeGrid"></div>
+
+      <div class="navigation">
+        <button class="btn btn-back" onclick="prevStep()">Back</button>
+        <button class="btn btn-next" onclick="nextStep()">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Guest Count -->
+    <div class="step-container" data-step="3">
+      <h2 class="step-title">How many guests?</h2>
+      <p class="step-desc">Let us know how many kids will be joining the party.</p>
+
+      <div class="form-group">
+        <label>Number of Guests (including birthday child) *</label>
+        <input type="number" id="guestCount" min="1" max="30" value="10" required>
+        <small style="color: var(--muted); margin-top: 4px; display: block;">Pricing is typically $10-15 per guest</small>
+      </div>
+
+      <div class="form-group">
+        <label>Any special requirements or dietary restrictions?</label>
+        <input type="text" id="specialRequirements" placeholder="e.g., Vegetarian, Gluten-free, Allergy info">
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-row">
+          <span>Base Party Price:</span>
+          <span id="basePrice">$25</span>
+        </div>
+        <div class="summary-row">
+          <span>Per Guest:</span>
+          <span id="perGuestPrice">$12 × <span id="guestCountDisplay">10</span> guests</span>
+        </div>
+        <div class="summary-row total">
+          <span>Estimated Total:</span>
+          <span id="estimatedTotal">$145</span>
+        </div>
+      </div>
+
+      <div class="navigation">
+        <button class="btn btn-back" onclick="prevStep()">Back</button>
+        <button class="btn btn-next" onclick="nextStep()">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Add-Ons -->
+    <div class="step-container" data-step="4">
+      <h2 class="step-title">Add special touches</h2>
+      <p class="step-desc">Optional add-ons to make the party extra special.</p>
+
+      <div class="addon-grid" id="addonGrid"></div>
+
+      <div class="summary-box" style="margin-top: 32px;">
+        <div class="summary-row">
+          <span>Base Party:</span>
+          <span id="summaryBase">$145</span>
+        </div>
+        <div class="summary-row">
+          <span>Add-Ons:</span>
+          <span id="summaryAddons">$0</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total:</span>
+          <span id="summaryTotal">$145</span>
+        </div>
+      </div>
+
+      <div class="navigation">
+        <button class="btn btn-back" onclick="prevStep()">Back</button>
+        <button class="btn btn-next" onclick="nextStep()">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 5: Review & Confirm -->
+    <div class="step-container" data-step="5">
+      <h2 class="step-title">Review your booking</h2>
+      <p class="step-desc">Make sure everything looks good before confirming.</p>
+
+      <div class="summary-box">
+        <div class="summary-row">
+          <span><strong>Birthday Child:</strong></span>
+          <span id="reviewChild">-</span>
+        </div>
+        <div class="summary-row">
+          <span><strong>Party Theme:</strong></span>
+          <span id="reviewTheme">-</span>
+        </div>
+        <div class="summary-row">
+          <span><strong>Date & Time:</strong></span>
+          <span id="reviewDateTime">-</span>
+        </div>
+        <div class="summary-row">
+          <span><strong>Guest Count:</strong></span>
+          <span id="reviewGuests">-</span>
+        </div>
+        <div class="summary-row">
+          <span><strong>Add-Ons:</strong></span>
+          <span id="reviewAddons">-</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total Amount:</span>
+          <span id="reviewTotal">$0</span>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top: 24px;">
+        <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 0; font-weight: 500;">
+          <input type="checkbox" id="agreeTerms">
+          I agree to the terms and conditions
+        </label>
+      </div>
+
+      <div class="navigation">
+        <button class="btn btn-back" onclick="prevStep()">Back</button>
+        <button class="btn btn-next" id="confirmBtn" onclick="nextStep()">Confirm Booking</button>
+      </div>
+    </div>
+
+    <!-- Step 6: Confirmation -->
+    <div class="step-container" data-step="6">
+      <div class="confirmation-content">
+        <div class="success-icon">🎉</div>
+        <h2>Party Booking Confirmed!</h2>
+        <p>Your party booking has been created successfully.</p>
+
+        <div class="booking-ref" id="bookingRef">Booking ID: #PARTY-2024-001</div>
+
+        <p style="color: var(--muted); margin-bottom: 24px;">
+          A confirmation email has been sent. You can now create and share an invitation with guests.
+        </p>
+
+        <div class="action-buttons">
+          <button class="btn-action" onclick="generateInvitation()">Create Invitation</button>
+          <button class="btn-action primary" onclick="goHome()">Go to Dashboard</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { auth } from '../lib/auth.js';
+    import { bookingState, PARTY_PACKAGES, PARTY_ADDONS } from '../lib/booking-state.js';
+    import { PartyBot } from '../components/party-bot.js';
+
+    if (!auth.isAuthenticated()) {
+      window.location.href = '../auth/login.html';
+    }
+
+    let currentStep = 1;
+    let bookingData = {
+      userId: auth.getCurrentUser().id,
+      childName: '',
+      childAge: '',
+      childGender: '',
+      childInterests: '',
+      partyDate: '',
+      partyTime: '',
+      selectedTheme: null,
+      guestCount: 10,
+      specialRequirements: '',
+      selectedAddons: [],
+      basePrice: 25,
+      pricePerGuest: 12,
+    };
+
+    // Initialize
+    renderProgressDots();
+    renderThemes();
+    renderAddons();
+    updatePricing();
+
+    // Progress dots
+    function renderProgressDots() {
+      const container = document.getElementById('progressDots');
+      container.innerHTML = Array.from({ length: 6 }, (_, i) =>
+        `<div class="dot${i + 1 <= currentStep ? ' active' : ''}${i + 1 < currentStep ? ' completed' : ''}"></div>`
+      ).join('');
+    }
+
+    function renderThemes() {
+      const grid = document.getElementById('themeGrid');
+      grid.innerHTML = PARTY_PACKAGES.map(pkg => `
+        <div class="theme-card" data-id="${pkg.id}" onclick="selectTheme('${pkg.id}', '${pkg.name}', '${pkg.image}')">
+          <div class="theme-icon">${pkg.image}</div>
+          <div class="theme-name">${pkg.name}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderAddons() {
+      const grid = document.getElementById('addonGrid');
+      grid.innerHTML = PARTY_ADDONS.map(addon => `
+        <div class="addon-card" data-id="${addon.id}" onclick="toggleAddon('${addon.id}', '${addon.name}', ${addon.price})">
+          <div class="addon-header">
+            <div class="addon-name">${addon.name}</div>
+            <div class="addon-price">+$${addon.price}</div>
+          </div>
+          <div class="addon-desc">${addon.description}</div>
+        </div>
+      `).join('');
+    }
+
+    window.selectTheme = (id, name, icon) => {
+      document.querySelectorAll('.theme-card').forEach(card => card.classList.remove('selected'));
+      event.target.closest('.theme-card').classList.add('selected');
+      bookingData.selectedTheme = { id, name, icon };
+    };
+
+    window.toggleAddon = (id, name, price) => {
+      const card = event.target.closest('.addon-card');
+      const index = bookingData.selectedAddons.findIndex(a => a.id === id);
+
+      if (index > -1) {
+        bookingData.selectedAddons.splice(index, 1);
+        card.classList.remove('selected');
+      } else {
+        bookingData.selectedAddons.push({ id, name, price });
+        card.classList.add('selected');
+      }
+      updatePricing();
+    };
+
+    function updatePricing() {
+      const guestCount = parseInt(document.getElementById('guestCount')?.value || 10);
+      const basePrice = bookingData.basePrice;
+      const perGuestTotal = bookingData.pricePerGuest * guestCount;
+      const addonsTotal = bookingData.selectedAddons.reduce((sum, a) => sum + a.price, 0);
+      const total = basePrice + perGuestTotal + addonsTotal;
+
+      if (document.getElementById('basePrice')) {
+        document.getElementById('basePrice').textContent = `$${basePrice}`;
+        document.getElementById('perGuestPrice').textContent = `$${bookingData.pricePerGuest} × ${guestCount} guests`;
+        document.getElementById('guestCountDisplay').textContent = guestCount;
+        document.getElementById('estimatedTotal').textContent = `$${basePrice + perGuestTotal}`;
+      }
+
+      if (document.getElementById('summaryBase')) {
+        document.getElementById('summaryBase').textContent = `$${basePrice + perGuestTotal}`;
+        document.getElementById('summaryAddons').textContent = `$${addonsTotal}`;
+        document.getElementById('summaryTotal').textContent = `$${total}`;
+      }
+
+      bookingData.totalPrice = total;
+      bookingData.guestCount = guestCount;
+    }
+
+    document.getElementById('guestCount')?.addEventListener('input', updatePricing);
+
+    window.nextStep = () => {
+      // Validate current step
+      if (currentStep === 1) {
+        bookingData.childName = document.getElementById('childName').value;
+        bookingData.childAge = document.getElementById('childAge').value;
+        bookingData.childGender = document.getElementById('childGender').value;
+        bookingData.childInterests = document.getElementById('childInterests').value;
+        bookingData.partyDate = document.getElementById('partyDate').value;
+        bookingData.partyTime = document.getElementById('partyTime').value;
+
+        if (!bookingData.childName || !bookingData.childAge || !bookingData.partyDate || !bookingData.partyTime) {
+          alert('Please fill in all required fields');
+          return;
+        }
+      }
+
+      if (currentStep === 2) {
+        if (!bookingData.selectedTheme) {
+          alert('Please select a party theme');
+          return;
+        }
+      }
+
+      if (currentStep === 5) {
+        if (!document.getElementById('agreeTerms').checked) {
+          alert('Please agree to the terms and conditions');
+          return;
+        }
+        // Create booking
+        updateReview();
+        const booking = bookingState.createBooking({
+          ...bookingData,
+          partyName: bookingData.selectedTheme?.name || 'Party',
+          icon: bookingData.selectedTheme?.icon || '🎈',
+          status: 'confirmed',
+          date: bookingData.partyDate,
+          bookingRef: 'PARTY-' + Date.now().toString().slice(-6),
+        });
+        document.getElementById('bookingRef').textContent = `Booking ID: #${booking.bookingRef}`;
+      }
+
+      if (currentStep < 6) {
+        currentStep++;
+        updateReview();
+        showStep();
+      }
+    };
+
+    window.prevStep = () => {
+      if (currentStep > 1) {
+        currentStep--;
+        showStep();
+      }
+    };
+
+    function showStep() {
+      document.querySelectorAll('.step-container').forEach(el => el.classList.remove('active'));
+      document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
+      document.getElementById('stepCounter').textContent = `Step ${currentStep} of 6`;
+      renderProgressDots();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateReview() {
+      const date = new Date(bookingData.partyDate);
+      const dateStr = date.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+      const addonsStr = bookingData.selectedAddons.map(a => a.name).join(', ') || 'None';
+
+      if (document.getElementById('reviewChild')) {
+        document.getElementById('reviewChild').textContent = `${bookingData.childName}, ${bookingData.childAge} years old`;
+        document.getElementById('reviewTheme').textContent = bookingData.selectedTheme?.name || '-';
+        document.getElementById('reviewDateTime').textContent = `${dateStr} at ${bookingData.partyTime}`;
+        document.getElementById('reviewGuests').textContent = `${bookingData.guestCount} children`;
+        document.getElementById('reviewAddons').textContent = addonsStr;
+        document.getElementById('reviewTotal').textContent = `$${bookingData.totalPrice}`;
+      }
+    }
+
+    window.goHome = () => {
+      window.location.href = '../dashboard/index.html';
+    };
+
+    window.generateInvitation = () => {
+      const booking = bookingState.getAllBookings()[bookingState.getAllBookings().length - 1];
+      window.location.href = `../invitation/index.html?id=${booking.id}`;
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Omnify Party Booking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --mint: #C8F7DC;
+      --teal: #4ECDC4;
+      --green: #16C172;
+      --dark-green: #0E9F63;
+      --accent: #FF7A59;
+      --cream: #FFFBF4;
+      --lavender: #EEE9FF;
+      --text: #1C2B24;
+      --muted: #6B7B72;
+      --border: #E8E8E8;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: linear-gradient(135deg, var(--cream) 0%, var(--lavender) 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    .logo p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      background: var(--cream);
+    }
+
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: var(--teal);
+      background: white;
+    }
+
+    .form-group.error input {
+      border-color: var(--accent);
+      background: rgba(255, 122, 89, 0.05);
+    }
+
+    .error-message {
+      color: var(--accent);
+      font-size: 12px;
+      margin-top: 6px;
+      display: none;
+    }
+
+    .form-group.error .error-message {
+      display: block;
+    }
+
+    .remember-forgot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      font-size: 13px;
+    }
+
+    .remember-forgot a {
+      color: var(--teal);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--green), var(--dark-green));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: all 0.3s ease;
+    }
+
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(22, 193, 114, 0.3);
+    }
+
+    .btn-login:active {
+      transform: translateY(0);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 24px 0;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .guest-login {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-guest {
+      flex: 1;
+      padding: 12px;
+      background: white;
+      color: var(--text);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: all 0.2s ease;
+    }
+
+    .btn-guest:hover {
+      border-color: var(--teal);
+      background: var(--cream);
+    }
+
+    .footer-text {
+      text-align: center;
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .footer-text a {
+      color: var(--green);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .success-message {
+      display: none;
+      padding: 12px;
+      background: rgba(22, 193, 114, 0.1);
+      border-left: 4px solid var(--green);
+      border-radius: 8px;
+      margin-bottom: 20px;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 24px;
+      }
+
+      .logo h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <h1>🎉 Omnify</h1>
+      <p>Party Booking Platform</p>
+    </div>
+
+    <div class="card">
+      <div class="success-message" id="successMessage">
+        Welcome back! Redirecting to dashboard...
+      </div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="parent@example.com" required>
+          <div class="error-message">Please enter a valid email</div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="••••••••" required>
+          <div class="error-message">Incorrect password</div>
+        </div>
+
+        <div class="remember-forgot">
+          <label style="margin: 0; display: flex; align-items: center; gap: 6px; font-weight: 400;">
+            <input type="checkbox" id="remember" style="width: 16px; height: 16px; cursor: pointer;">
+            Remember me
+          </label>
+          <a href="#forgot">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn-login">Sign In</button>
+      </form>
+
+      <div class="divider">or</div>
+
+      <div class="guest-login">
+        <button type="button" class="btn-guest" id="guestBtn">Continue as Guest</button>
+      </div>
+
+      <div class="footer-text">
+        Don't have an account? <a href="register.html">Create one</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { auth } from '../lib/auth.js';
+
+    const form = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const successMessage = document.getElementById('successMessage');
+    const guestBtn = document.getElementById('guestBtn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      try {
+        auth.login(email, password);
+        successMessage.classList.add('show');
+        form.style.opacity = '0.6';
+        form.style.pointerEvents = 'none';
+        setTimeout(() => {
+          window.location.href = '../dashboard/index.html';
+        }, 800);
+      } catch (err) {
+        // Show error on the form
+        emailInput.parentElement.classList.add('error');
+        passwordInput.parentElement.classList.add('error');
+        setTimeout(() => {
+          emailInput.parentElement.classList.remove('error');
+          passwordInput.parentElement.classList.remove('error');
+        }, 2000);
+      }
+    });
+
+    guestBtn.addEventListener('click', () => {
+      auth.loginAsGuest();
+      window.location.href = '../dashboard/index.html';
+    });
+
+    // Demo accounts
+    emailInput.addEventListener('focus', () => {
+      if (!emailInput.value) {
+        emailInput.value = 'demo@example.com';
+        emailInput.nextElementSibling.textContent = 'Password: demo123';
+      }
+    });
+  </script>
+</body>
+</html>
